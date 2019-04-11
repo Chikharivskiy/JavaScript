@@ -32,6 +32,8 @@ function brindSlideToggle(trigger, boxBody, content, openClass){
 brindSlideToggle('.hamburger', '[data-slide="nav"]', '.header__menu', 'slide-active');
 // -----------------------------------------------------------------
 // switching mode(light, night)
+let night = false;
+
 function switchMode(){
 	if(night === false){
 		night = true;
@@ -71,7 +73,6 @@ function switchMode(){
 		document.querySelector('.logo > img').src = 'logo/youtube.svg';
 	}
 }
-let night = false;
 
 switcher.addEventListener('change', () => {
 	switchMode();
@@ -109,6 +110,11 @@ more.addEventListener('click', () => {
 			setTimeout(() =>{
 				card.classList.remove('videos__item-active')
 			}, 10);
+
+			if(night == true){
+				card.querySelector('.videos__item-descr').style.color = "#fff";
+				card.querySelector('.videos__item-views').style.color = "#fff";
+			}
 			bindNewModal(card);
 	}
 
@@ -145,7 +151,7 @@ function bindModal(cards){
 		item.addEventListener('click', (e) =>{
 			e.preventDefault();
 			const id = item.getAttribute('data-url');
-			loadVideo(id);
+			// loadVideo(id);
 			openModal();
 		});
 	});
@@ -156,13 +162,19 @@ function bindNewModal(cards){
 	cards.addEventListener('click', (e) =>{
 		e.preventDefault();
 		const id = cards.getAttribute('data-url');
-		loadVideo(id);
+		// loadVideo(id);
 		openModal();
 	});
 }
 
 modal.addEventListener('click', (e) =>{
 	if(!e.target.classList.contains('modal__body')){
+		closeModal();
+	}
+});
+
+document.addEventListener('keydown', function(e){
+	if(e.keyCode === 27){
 		closeModal();
 	}
 });
@@ -185,8 +197,4 @@ function createVideoPlayer(){
 }
 
 createVideoPlayer();
-
-function loadVideo(id){
-	player.loadVideoById({'videoId': `${id}`});
-}
 // ---------------------------------------------------------------------
